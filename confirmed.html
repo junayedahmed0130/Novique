@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOVIQUE // Order Confirmed</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="components.js"></script>
+  <script type="text/babel">
+    const navigate = (page) => window.location.href = page + '.html';
+
+    function ConfirmationPage() {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      const orderId = 'NOVIQUE-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+
+      return (
+        <>
+          <TargetingCursor />
+          <Starfield />
+          <div className="nebula-overlay" />
+          <div className="scanlines" />
+          
+          <div className="app-container" style={{ minHeight: '100vh', padding: '60px 0' }}>
+            <Header currentPage="confirmed" navigate={navigate} />
+
+            <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+              <div style={{ width: '100px', height: '100px', margin: '0 auto 30px', border: '2px solid var(--neon-green)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 30px rgba(0, 255, 157, 0.3)', animation: 'pulse 2s infinite' }}>
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--neon-green)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <h1 style={{ fontSize: '36px', fontWeight: '700', letterSpacing: '4px', marginBottom: '15px', background: 'linear-gradient(90deg, #fff, var(--neon-green))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                WARP TRAJECTORY LOCKED
+              </h1>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--text-muted)', letterSpacing: '1px', marginBottom: '20px' }}>
+                Quantum state collapsed. Your cargo has been materialized and injected into the warp stream.
+              </p>
+              <div style={{ display: 'inline-block', padding: '10px 20px', background: 'rgba(0, 255, 157, 0.05)', border: '1px solid rgba(0, 255, 157, 0.2)', borderRadius: '4px', fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--neon-green)', letterSpacing: '2px' }}>
+                ORDER ID: {orderId}
+              </div>
+            </div>
+
+            <div style={{ maxWidth: '800px', margin: '0 auto', background: 'var(--glass)', border: '1px solid var(--glass-border)', borderRadius: '12px', padding: '40px' }}>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '3px', color: 'var(--text-muted)', marginBottom: '25px', textTransform: 'uppercase', borderBottom: '1px solid var(--glass-border)', paddingBottom: '15px' }}>
+                Cargo Manifest
+              </div>
+
+              {cart.length === 0 ? (
+                <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '40px' }}>No items in cart</div>
+              ) : cart.map(item => (
+                <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '15px 0', borderBottom: '1px solid rgba(255,255,255,0.02)' }}>
+                  <div style={{ fontSize: '28px' }}>{item.icon}</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: '14px', fontWeight: '700', marginBottom: '4px', color: '#fff' }}>{item.name}</div>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--text-muted)', letterSpacing: '1px' }}>QTY: {item.qty}</div>
+                  </div>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '16px', fontWeight: '700', color: 'var(--neon-gold)' }}>{item.price * item.qty} ₢</div>
+                </div>
+              ))}
+
+              <div style={{ marginTop: '30px', paddingTop: '20px', borderTop: '1px solid var(--glass-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--text-muted)', letterSpacing: '2px' }}>TOTAL MASS</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '28px', fontWeight: '700', color: '#fff' }}>{total} ₢</span>
+              </div>
+            </div>
+
+            <div style={{ textAlign: 'center', marginTop: '40px' }}>
+              <button className="btn btn-primary" onClick={() => navigate('market')}>
+                RETURN TO MARKET
+              </button>
+            </div>
+          </div>
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<ConfirmationPage />);
+  </script>
+</body>
+</html>

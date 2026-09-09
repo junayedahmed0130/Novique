@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOVIQUE // Galactic Market</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="components.js"></script>
+  <script type="text/babel">
+    const navigate = (page) => window.location.href = page + '.html';
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const [cart, setCart] = useState([]);
+
+    const products = [
+      { id: 1, name: 'Quantum Headphones', price: 299, icon: '🎧', category: 'AUDIO', desc: 'Noise-cancellation across parallel dimensions.' },
+      { id: 2, name: 'Plasma Smartwatch', price: 459, icon: '', category: 'TECH', desc: 'Tracks biometrics and temporal anomalies.' },
+      { id: 3, name: 'Nebula Sneakers', price: 189, icon: '', category: 'WEAR', desc: 'Anti-gravity soles. Walk on stardust.' },
+      { id: 4, name: 'Gravity Lamp', price: 129, icon: '💡', category: 'HOME', desc: 'Levitating light source with mood control.' },
+    ];
+
+    const addToCart = (product) => {
+      setCart(prev => {
+        const existing = prev.find(item => item.id === product.id);
+        if (existing) return prev.map(item => item.id === product.id ? { ...item, qty: item.qty + 1 } : item);
+        return [...prev, { ...product, qty: 1 }];
+      });
+    };
+
+    const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
+
+    function App() {
+      return (
+        <>
+          <TargetingCursor />
+          <Starfield />
+          <div className="nebula-overlay" />
+          <div className="scanlines" />
+          
+          <div className="app-container">
+            <Header currentPage="market" navigate={navigate} />
+            
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '60px 0 40px' }}>
+              <div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--neon-cyan)', letterSpacing: '4px', marginBottom: '15px' }}>// GALACTIC MARKETPLACE</div>
+                <h1 style={{ fontSize: '48px', fontWeight: '700', letterSpacing: '2px', color: '#fff' }}>ACQUIRE ARTIFACTS</h1>
+              </div>
+              <button className="btn btn-secondary" onClick={() => setIsCartOpen(true)}>
+                CARGO HOLD ({cartCount})
+              </button>
+            </div>
+
+            <div className="product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '30px', paddingBottom: '100px' }}>
+              {products.map(product => (
+                <div key={product.id} className="product-card" style={{ background: 'var(--glass)', border: '1px solid var(--glass-border)', borderRadius: '12px', padding: '30px', transition: 'all 0.4s' }}>
+                  <div style={{ fontSize: '56px', marginBottom: '20px', filter: 'drop-shadow(0 0 15px rgba(255,255,255,0.2))' }}>{product.icon}</div>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--neon-cyan)', letterSpacing: '2px', marginBottom: '10px' }}>{product.category}</div>
+                  <div style={{ fontSize: '20px', fontWeight: '700', marginBottom: '10px', color: '#fff' }}>{product.name}</div>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--text-muted)', lineHeight: '1.6', marginBottom: '30px' }}>{product.desc}</div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '22px', fontWeight: '700', color: 'var(--neon-gold)' }}>{product.price} ₢</div>
+                    <button className="btn btn-primary" onClick={() => addToCart(product)}>INJECT</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {isCartOpen && (
+              <>
+                <div onClick={() => setIsCartOpen(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)', zIndex: 90 }} />
+                <div style={{ position: 'fixed', top: 0, right: 0, width: '100%', maxWidth: '450px', height: '100vh', background: 'rgba(5, 5, 10, 0.95)', backdropFilter: 'blur(20px)', borderLeft: '1px solid var(--glass-border)', zIndex: 100, padding: '40px', display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
+                    <div style={{ fontSize: '18px', letterSpacing: '4px', color: 'var(--neon-cyan)' }}>CARGO MANIFEST</div>
+                    <button onClick={() => setIsCartOpen(false)} style={{ background: 'none', border: 'none', color: '#fff', fontSize: '24px', cursor: 'pointer' }}>×</button>
+                  </div>
+                  
+                  <div style={{ flex: 1, overflowY: 'auto' }}>
+                    {cart.length === 0 ? (
+                      <div style={{ textAlign: 'center', color: 'var(--text-muted)', marginTop: '50px', fontFamily: 'var(--font-mono)', fontSize: '12px' }}>// SINGULARITY IS EMPTY //</div>
+                    ) : cart.map(item => (
+                      <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '15px', background: 'var(--glass)', border: '1px solid var(--glass-border)', borderRadius: '8px', marginBottom: '15px' }}>
+                        <div style={{ fontSize: '24px' }}>{item.icon}</div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontSize: '14px', marginBottom: '4px' }}>{item.name}</div>
+                          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--neon-gold)' }}>{item.price * item.qty} ₢</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div style={{ marginTop: '30px', paddingTop: '20px', borderTop: '1px solid var(--glass-border)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--text-muted)', letterSpacing: '2px' }}>TOTAL MASS</span>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '24px', color: 'var(--neon-gold)', fontWeight: 'bold' }}>
+                        {cart.reduce((sum, i) => sum + i.price * i.qty, 0)} 
+                      </span>
+                    </div>
+                    <button className="btn btn-primary" style={{ width: '100%' }} onClick={() => { setIsCartOpen(false); navigate('confirmed'); }}>
+                      INITIATE WARP
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

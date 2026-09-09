@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOVIQUE // Beyond the Event Horizon</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="components.js"></script>
+  <script type="text/babel">
+    const navigate = (page) => window.location.href = page + '.html';
+
+    function App() {
+      return (
+        <>
+          <TargetingCursor />
+          <Starfield />
+          <div className="nebula-overlay" />
+          <div className="scanlines" />
+          
+          <div className="app-container">
+            <Header currentPage="landing" navigate={navigate} />
+            
+            <section className="hero" style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '60px 0' }}>
+              <div className="logo-container" style={{ position: 'relative', display: 'inline-block', marginBottom: '30px' }}>
+                <div className="logo-base" style={{ fontSize: 'clamp(40px, 8vw, 100px)', fontWeight: '700', letterSpacing: '15px', color: 'rgba(255, 255, 255, 0.05)', userSelect: 'none' }}>NOVIQUE</div>
+                <div className="logo-plasma" style={{ position: 'absolute', top: 0, left: 0, fontSize: 'clamp(40px, 8vw, 100px)', fontWeight: '700', letterSpacing: '15px', color: '#fff', textShadow: '0 0 10px #fff, 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan), 0 0 80px var(--neon-pink)', clipPath: 'inset(0 100% 0 0)', animation: 'plasmaIgnite 2.5s cubic-bezier(0.1, 0.8, 0.2, 1) 0.5s forwards', userSelect: 'none' }}>NOVIQUE</div>
+                <div className="comet-assembly" style={{ position: 'absolute', top: '50%', left: '-150px', transform: 'translateY(-50%) rotate(-12deg)', display: 'flex', alignItems: 'center', opacity: 0, animation: 'cometFlyby 2.5s cubic-bezier(0.1, 0.8, 0.2, 1) 0.5s forwards' }}>
+                  <div className="comet-dust-tail" style={{ position: 'absolute', right: '15px', top: '50%', transform: 'translateY(-50%) rotate(8deg)', width: '400px', height: '20px', background: 'linear-gradient(90deg, transparent 0%, rgba(255, 0, 234, 0.6) 40%, rgba(255, 255, 255, 0.8) 100%)', borderRadius: '10px', filter: 'blur(6px)', opacity: 0.5 }}></div>
+                  <div className="comet-ion-tail" style={{ position: 'absolute', right: '15px', top: '50%', transform: 'translateY(-50%)', width: '300px', height: '4px', background: 'linear-gradient(90deg, transparent 0%, var(--neon-cyan) 30%, #fff 100%)', borderRadius: '2px', filter: 'blur(1px)', opacity: 0.8 }}></div>
+                  <div className="comet-core" style={{ width: '20px', height: '20px', background: '#fff', borderRadius: '50%', boxShadow: '0 0 20px 5px #fff, 0 0 40px 10px var(--neon-cyan), 0 0 80px 20px var(--neon-pink)' }}></div>
+                </div>
+              </div>
+              
+              <div className="hero-tagline" style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--text-muted)', letterSpacing: '4px', marginBottom: '40px', opacity: 0, animation: 'fadeIn 1s ease 2.5s forwards' }}>BEYOND THE EVENT HORIZON</div>
+              <button className="btn btn-primary" onClick={() => navigate('market')} style={{ opacity: 0, animation: 'fadeIn 1s ease 2.8s forwards' }}>ENTER MARKET</button>
+            </section>
+
+            <style>{`
+              @keyframes plasmaIgnite { 0% { clip-path: inset(0 100% 0 0); } 100% { clip-path: inset(0 0% 0 0); } }
+              @keyframes cometFlyby { 0% { left: -200px; opacity: 1; } 70% { opacity: 1; } 100% { left: 120%; opacity: 0; } }
+              @keyframes fadeIn { to { opacity: 1; } }
+            `}</style>
+          </div>
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
